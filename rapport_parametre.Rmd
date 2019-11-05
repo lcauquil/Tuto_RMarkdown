@@ -1,0 +1,27 @@
+---
+title: "summary"
+author: "Laurent Cauquil"
+date: "`r Sys.Date()`"
+output: html_document
+params: 
+  data: file.csv
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown paramétré
+
+### Import du fichier
+
+```{r}
+df <- read.table(params$data, h=T, sep = ";")
+```
+
+### Résumé de la table
+
+```{r}
+summary(df)
+```
+
