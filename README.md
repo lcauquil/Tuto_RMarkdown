@@ -10,6 +10,7 @@ Facile à prendre en main au début, les utilisateurs avancés peuvent par la su
 
 Voici un tutoriel qui vous aidera à produire ce type de document.
 
-Ouvrer le fichier `tuto_RMarkdown.html` dans votre navigateur pour lire le tutoriel.
+Téléchargez le dépôt en local, dézippez, et ouvrez le fichier `tuto_RMarkdown.html` avec votre navigateur pour lire le tuto.
+Le fichier .md ne s'affiche pas correctemnt dans github, si quelqu'un arrive à corriger le bug je suis preneur :smiley:
 
 
