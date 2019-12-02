@@ -9,6 +9,7 @@ output:
     theme: simplex
     toc: yes
     toc_float: yes
+    self_contained: yes
 link-citations: yes
 bibliography: biblio.bib
 ---
