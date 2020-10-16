@@ -13,4 +13,4 @@ Voici un tutoriel qui vous aidera à produire ce type de document.
 Téléchargez le dépôt en local, dézippez, et ouvrez le fichier `tuto_RMarkdown.html` avec votre navigateur pour lire le tuto.
 Le fichier .md ne s'affiche pas correctement dans github, si quelqu'un arrive à corriger le bug je suis preneur :smiley:
 
-
+Lien [ici](https://lcauquil.github.io/tuto_RMarkdown/tuto_RMarkdown.html)
