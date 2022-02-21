@@ -10,6 +10,7 @@ output:
     toc: yes
     toc_float: yes
     self_contained: yes
+    css: style.css
 link-citations: yes
 bibliography: biblio.bib
 ---
@@ -165,7 +166,7 @@ Si on précise le format de sortie `output` sans argument, on peut rajouter uniq
 ---
 title: "Exemple R Markdown"
 author: "Laurent Cauquil"
-date: "14 juillet 2023"
+date: "14 juillet 1789"
 output: html_document
 ---
 ```
@@ -176,7 +177,7 @@ Si on spécifie plusieurs format de sortie il faut utiliser l'indentation. Mettr
 ---
 title: "Exemple R Markdown"
 author: "Laurent Cauquil"
-date: "14 juillet 2023"
+date: "14 juillet 1789"
 output: 
   html_document: default
   pdf_document: default
@@ -194,7 +195,7 @@ Rajouter un sommaire et fixer la largeur des figures.
 ---
 title: "Exemple R Markdown"
 author: "Laurent Cauquil"
-date: "14 juillet 2023"
+date: "14 juillet 1789"
 output: 
   html_document:
     toc: TRUE
@@ -213,7 +214,7 @@ Rajouter un sous-titre
 title: "Exemple R Markdown"
 subtitle: "Customisation avancée"
 author: "Laurent Cauquil"
-date: "14 juillet 2023"
+date: "14 juillet 1789"
 output: 
   html_document:
     toc: TRUE
@@ -229,7 +230,7 @@ Rendre le sommaire mobile sur la droite du rapport quand on parcours la page.
 title: "Exemple R Markdown"
 subtitle: "Customisation avancée"
 author: "Laurent Cauquil"
-date: "14 juillet 2023"
+date: "14 juillet 1789"
 output: 
   html_document:
     toc: TRUE
@@ -669,6 +670,18 @@ On peut exécuter du code R au milieu d'un texte sans avoir à créér un chunk.
 Date de compilation du document `r Sys.Date()`
 <Br>
 <Br>
+
+### Autres langages
+
+Il est possible d'exécuter des lignes de codes d'autres langages que R.  
+Il suffit de remplacer lr `r`en début de chunk par le nom de langage, par exemple pour lancer du code python, on utilisera un chunk avec le label suivant: `{python }`
+
+Voici une liste de langage autorisés.
+
+```{r}
+names(knitr::knit_engines$get())
+```
+
 
 ## Tables
 
@@ -1205,6 +1218,110 @@ Ainsi, le résultat de chaque chunk (calculé auparavant) peut être visualisé 
 
 Pour transformer un R Markdown en Notebook il suffit de changer le YAML et inversement.
 
+# Avancé: HTML/CSS et plus
+
+## HTML/CSS
+
+L'utilisation d'html avec css permet de personnaliser grandement une page.  
+
+Pour cela il suffit de créer un css à proximité du .rmd puis de le déclarer dans le yaml en tant que css.
+
+```{r, eval = FALSE}
+---
+title: "Exemple R Markdown"
+author: "Laurent Cauquil"
+date: "14 juillet 1789"
+output: 
+  html_document:
+    css: style.css
+---
+```
+
+Voici quelques exemples:
+
+### Rajouter un ascenseur  
+
+L'affichage d'un data.frame peut devenir envahissant si celui est vraiment long. Une solution est d'utiliser les fonctions `head()` et `tail()` pour en afficher que le début ou la fin ou bien de le converit en objet tibble mais dans ces cas on a pas accès à l'ensemble de l'objet.  
+
+Une solution est d'ajouter un ascenseur sur le côté.
+
+```{css}
+.scroll-300 {
+  max-height: 300px;
+  overflow-y: auto;
+  background-color: inherit;
+}
+```
+
+```{r, class.output = "scroll-300"}
+mtcars
+```
+
+> ATTENTION ne marche pas si collapse = TRUE
+
+## Et plus
+
+### Ajouter un panneau escamotable
+
+<details>
+  <summary>Cliquer pour afficher mtcars</summary>
+
+```{r, class.output = "scroll-300"}
+mtcars
+```
+
+</details>
+
+
+
+### Utiliser un bouton pour afficher un résultat
+
+En insérant ce code dans un fichier nommé "settings.r" et en le chargeant avec la fonction `source()` en début de script, on a la possibilité d'affiché un bouton qui affiche/cache le résultat d'un chunk.
+
+```{r, eval = FALSE}
+# Knitr hooks
+knitr::knit_hooks$set(
+  hide_button = function(before, options, envir) {
+    if (is.character(options$hide_button)) {
+      button_text = options$hide_button
+    } else {
+      button_text = "Show solution"
+    }
+    block_label <- paste0("hide_button", options$label)
+    if (before) {
+      return(paste0(sep = "\n",
+                    '<button class="btn btn-danger" data-toggle="collapse" data-target="#', block_label, '"> ', button_text, ' </button>\n',
+                    '<div id="', block_label, '" class="collapse">\n'))
+    } else {
+      return("</div><br />\n")
+    }
+  },
+  output = function(x, options){
+    x <- gsub(x, pattern = "<", replacement = "&lt;")
+    x <- gsub(x, pattern = ">", replacement = "&gt;")
+    paste0(
+      "<pre class=\"r-output\"><code>",
+      fansi::sgr_to_html(x = x, warn = TRUE, term.cap = "256"),
+      # ansistrings::ansi_to_html(text = x, fullpage = FALSE),
+      "</code></pre>"
+    )
+  }
+)
+```
+
+Chargement de la fonction dans l'environnement
+
+```{r, include = FALSE}
+source("settings.R")
+```
+
+Il suffit d'ajouter la fonction dans les options du chunk pour l'activer
+
+{r, hide_button = TRUE} 
+
+```{r, hide_button = TRUE}
+summary(mtcars)
+```
 
 # Liens {-}
 
