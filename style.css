@@ -1,0 +1,7 @@
+/* Ajoute un ascenseur dans la fenêtre d'affichage d'un objet*/
+.scroll-300 {
+  max-height: 300px;
+  overflow-y: auto;
+  background-color: inherit;
+}
+
