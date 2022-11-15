@@ -13,6 +13,9 @@ output:
     css: style.css
 link-citations: yes
 bibliography: biblio.bib
+editor_options: 
+  markdown: 
+    wrap: 72
 ---
 
 ```{r setup, include=FALSE}
@@ -29,37 +32,51 @@ library(dplyr)
 
 ## Pourquoi utiliser R Markdown ?
 
-Dans le contexte de recherche reproductible, R Markdown est un outil de choix.  
-En effet, il permet de produire des documents scientifiques mélangeant du texte, du code R et le résultat de l'exécution de ce code de manière automatique.  
+Dans le contexte de recherche reproductible, R Markdown est un outil de
+choix.\
+En effet, il permet de produire des documents scientifiques mélangeant
+du texte, du code R et le résultat de l'exécution de ce code de manière
+automatique.
 
-Autre avantage, il permet de regrouper tous les résultats d'analyses y compris les graphes en un seul document, visualisable par n'importe qui.  
-Ces rapports peuvent être générés dans différents formats (HTML, PDF, Office WORD,...) et dans différents représentations (page html, site web, présentations type powerpoint...).  
+Autre avantage, il permet de regrouper tous les résultats d'analyses y
+compris les graphes en un seul document, visualisable par n'importe
+qui.\
+Ces rapports peuvent être générés dans différents formats (HTML, PDF,
+Office WORD,...) et dans différents représentations (page html, site
+web, présentations type powerpoint...).
 
-Facile à prendre en main au début, les utilisateurs avancés peuvent par la suite customiser leur document à volonté via du code HTML et CSS.
+Facile à prendre en main au début, les utilisateurs avancés peuvent par
+la suite customiser leur document à volonté via du code HTML et CSS.
 
 ## Documentation
 
-La documentation officielle se trouve à cette page [R Markdown: The Definitive Guide](https://bookdown.org/yihui/rmarkdown/).  
-Cette documentation est évidemment le produit d'un document généré par R Markdown !
+La documentation officielle se trouve à cette page [R Markdown: The
+Definitive Guide](https://bookdown.org/yihui/rmarkdown/).\
+Cette documentation est évidemment le produit d'un document généré par R
+Markdown !
 
-Ne pas oublier l'incontournable [cheatsheet](https://www.rstudio.com/resources/cheatsheets/#rmarkdown) de RStudio.
+Ne pas oublier l'incontournable
+[cheatsheet](https://www.rstudio.com/resources/cheatsheets/#rmarkdown)
+de RStudio.
 
-De plus, il existe une multitude de tutoriels disponibles en ligne y compris en français (Cf. en bas de page).  
-
+De plus, il existe une multitude de tutoriels disponibles en ligne y
+compris en français (Cf. en bas de page).
 
 ## Premiers pas
 
-La solution la plus commode pour générer un rapport R Markdown est de créer un nouveau document R Markdown dans RStudio. Un fichier avec l'extension `.Rmd` est créé avec un modèle par défaut.
+La solution la plus commode pour générer un rapport R Markdown est de
+créer un nouveau document R Markdown dans RStudio. Un fichier avec
+l'extension `.Rmd` est créé avec un modèle par défaut.
 
-Pour générer le rapport, on utilise le bouton `Knit` ou la combinaison de touches <kbd>Ctrl</kbd> + <kbd>shift</kbd> + <kbd>k</kbd>.
+Pour générer le rapport, on utilise le bouton `Knit` ou la combinaison
+de touches <kbd>Ctrl</kbd> + <kbd>shift</kbd> + <kbd>k</kbd>.
 
-La production du document appelle des fonctions des packages `knitr`et `rmarkdown` qui sont chargés à la compilation du script.
-<Br>
+La production du document appelle des fonctions des packages `knitr`et
+`rmarkdown` qui sont chargés à la compilation du script. <Br>
 
->
-Dans le cas de la production de documents PDF, il faut veiller à installer une installation fonctionnelle de LaTeX. 
-Il est recommandé d'utiliser [tinyTeX](https://yihui.name/tinytex/)
-> 
+> Dans le cas de la production de documents PDF, il faut veiller à
+> installer une installation fonctionnelle de LaTeX. Il est recommandé
+> d'utiliser [tinyTeX](https://yihui.name/tinytex/)
 
 <Br>
 
@@ -70,19 +87,18 @@ tinytex::install_tinytex()  # install tinyTeX
 
 <Br>
 
->
-ATTENTION:<Br>Certains affichages ne sont pas compatibles avec un document PDF, notamment les tables et les graphes intéractifs.
->
+> ATTENTION:<Br>Certains affichages ne sont pas compatibles avec un
+> document PDF, notamment les tables et les graphes intéractifs.
 
 # Anatomie d'un R Markdown
 
 Un document R Markdown est constitué de 3 parties:
 
- - des méta-données (obligatoires)
- - du texte
- - du code à exécuter (`chunk`)
- 
- ````r
+-   des méta-données (obligatoires)
+-   du texte
+-   du code à exécuter (`chunk`)
+
+```` r
 # insertion d'un chunk dans le script
 ```{r, eval = FALSE}
 x = 2 + 2
@@ -90,77 +106,101 @@ x
 ```
 ````
 
-
 ## Méta-données: YAML
 
 Partie la plus obscure du script quand on démarre.
 
-Les méta-données sont saisies en début de script entre une paire de 3 tirets `---`.  
-Elles renseignent certains paramètres qui permettent de contrôler des caractéristiques du document produit en fonction du format de sortie choisi. 
-La syntaxe utilisée suit le format YAML (https://fr.wikipedia.org/wiki/YAML).
+Les méta-données sont saisies en début de script entre une paire de 3
+tirets `---`.\
+Elles renseignent certains paramètres qui permettent de contrôler des
+caractéristiques du document produit en fonction du format de sortie
+choisi. La syntaxe utilisée suit le format YAML
+(<https://fr.wikipedia.org/wiki/YAML>).
 
-Pour bien comprendre l'utilité de cette partie, il convient de s'attarder sur le processus de création du document R Markdown.
+Pour bien comprendre l'utilité de cette partie, il convient de
+s'attarder sur le processus de création du document R Markdown.
 
 Dans le diagramme suivant sont représentées les différentes étapes:
 
- - Création d'un script dans RStudio avec l'extension `.rmd`.
- - `knitr` transforme le script en document markdown `.md`, ce document contient les codes R, les résultats (ou les sorties), et les textes.
- - conversion de ce document dans le format désiré à l'aide de [`pandoc`](https://pandoc.org/MANUAL.html) (inclus dans RStudio)
- - Pandoc appelle LaTeX si le format de sorti est un PDF.
+-   Création d'un script dans RStudio avec l'extension `.rmd`.
+-   `knitr` transforme le script en document markdown `.md`, ce document
+    contient les codes R, les résultats (ou les sorties), et les textes.
+-   conversion de ce document dans le format désiré à l'aide de
+    [`pandoc`](https://pandoc.org/MANUAL.html) (inclus dans RStudio)
+-   Pandoc appelle LaTeX si le format de sorti est un PDF.
 
 ![Workflow de production d'un document RMarkdown](fig/workflow.png)
 
-<Br>
-Pour "contrôler" le rendu de notre document on intervient:
+<Br> Pour "contrôler" le rendu de notre document on intervient:
 
- - Au niveau de la traduction du fichier  `.rmd` en `.md` avec des options de `knitr`
- - Au niveau de la conversion dans le format de sortie en passant des informations à `pandoc`.  
+-   Au niveau de la traduction du fichier `.rmd` en `.md` avec des
+    options de `knitr`
+-   Au niveau de la conversion dans le format de sortie en passant des
+    informations à `pandoc`.
 
-Les options de `knitr` sont précisées dans les chunks (code R), elles peuvent s'appliquer:
+Les options de `knitr` sont précisées dans les chunks (code R), elles
+peuvent s'appliquer:
 
- - Soit uniquement au chunk dans lequel elle se trouve
- - Soit à tout le document
+-   Soit uniquement au chunk dans lequel elle se trouve
+-   Soit à tout le document
 
-Les méta-données du YAML permettent de préciser le rendu final du document, comme le titre, la présence d'un sommaire, d'une bibliographie...  
+Les méta-données du YAML permettent de préciser le rendu final du
+document, comme le titre, la présence d'un sommaire, d'une
+bibliographie...
 
-Les méta-données dépendent donc de `Pandoc` et des options disponibles en fonction du format de sortie choisi.  
-Pour maîtriser cette partie il est conseillé de "lire" la doc de [`Pandoc`](https://pandoc.org/MANUAL.html), ce qui n'est pas vraiment la partie la plus fun.  
+Les méta-données dépendent donc de `Pandoc` et des options disponibles
+en fonction du format de sortie choisi.\
+Pour maîtriser cette partie il est conseillé de "lire" la doc de
+[`Pandoc`](https://pandoc.org/MANUAL.html), ce qui n'est pas vraiment la
+partie la plus fun.
 
 Ou bien on s'inspire de ce qui existe déjà !
 
 ## Du texte
 
-La principale fonction d'un R Markdown est de présenter des analyses statistiques et de commenter les résultats.
-Tout ce texte de présentation et d'accompagnement est formaté et mis en page à l'aide de petites "balises".  
-On s'habitue vite à la syntaxe, c'est la grande force du Markdown: modifier du texte très simplement.
+La principale fonction d'un R Markdown est de présenter des analyses
+statistiques et de commenter les résultats. Tout ce texte de
+présentation et d'accompagnement est formaté et mis en page à l'aide de
+petites "balises".\
+On s'habitue vite à la syntaxe, c'est la grande force du Markdown:
+modifier du texte très simplement.
 
 ## Des lignes de codes
 
-Les analyses statistiques produites et présentées dans le document proviennent de l'exécution de code R.  
-Ces lignes de code sont séparées du texte par ce qu'on appelle des chunks délimités par 2 séries de 3 backquotes <kbd>Alt Gr</kbd> + <kbd>7</kbd>.  
-Par défaut le code inséré dans un chunk est affiché puis exécuté.  
+Les analyses statistiques produites et présentées dans le document
+proviennent de l'exécution de code R.\
+Ces lignes de code sont séparées du texte par ce qu'on appelle des
+chunks délimités par 2 séries de 3 backquotes <kbd>Alt Gr</kbd> +
+<kbd>7</kbd>.\
+Par défaut le code inséré dans un chunk est affiché puis exécuté.\
 Le résultat de l'exécution est à son tour affiché.
 
 ### En résumé
 
-<font size = "4">Un document R Markdown est constitué d'un **en-tête** suivi d'une succession de lignes de **texte** et de **lignes de code R** intégrées dans des chunks.</font>
-<Br> <Br> <Br>
- 
+<font size = "4">Un document R Markdown est constitué d'un **en-tête**
+suivi d'une succession de lignes de **texte** et de **lignes de code R**
+intégrées dans des chunks.</font> <Br> <Br> <Br>
+
 # R Markdown dans le détail
 
 Revenons en détails sur les différentes parties d'un R Markdown
 
 ## Méta-données: YAML
 
-A l'ouverture d'un script `.Rmd` un YAML de base est généré par défaut.  
+A l'ouverture d'un script `.Rmd` un YAML de base est généré par défaut.
 
-Il suffit de renseigner les champs correspondent, puis on "knite".  Le document produit est une page HTML placée dans le répertoire où se trouve le script.  
-Elle a le même nom que le script mais avec l'extension HTML.  
-Par défaut le fichier `.md` généré lors de la conversion n'est pas gardé.
+Il suffit de renseigner les champs correspondent, puis on "knite". Le
+document produit est une page HTML placée dans le répertoire où se
+trouve le script.\
+Elle a le même nom que le script mais avec l'extension HTML.\
+Par défaut le fichier `.md` généré lors de la conversion n'est pas
+gardé.
 
-Dans le cas suivant, on a renseigné le titre, l'auteur, la date, et le format du document de sortie.
+Dans le cas suivant, on a renseigné le titre, l'auteur, la date, et le
+format du document de sortie.
 
-Si on précise le format de sortie `output` sans argument, on peut rajouter uniquement la fonction sur la même ligne.  
+Si on précise le format de sortie `output` sans argument, on peut
+rajouter uniquement la fonction sur la même ligne.
 
 ```{r, eval = FALSE}
 ---
@@ -171,7 +211,8 @@ output: html_document
 ---
 ```
 
-Si on spécifie plusieurs format de sortie il faut utiliser l'indentation. Mettre `default` si aucun paramètres n'est précisé.
+Si on spécifie plusieurs format de sortie il faut utiliser
+l'indentation. Mettre `default` si aucun paramètres n'est précisé.
 
 ```{r, eval = FALSE}
 ---
@@ -184,11 +225,15 @@ output:
 ---
 ```
 
-On peut personnaliser la page en ajoutant des paramètres de formatage dans le YAML.  
-Par exemple pour personnaliser un document html, on rajoute des "sub-options" dans le YAML aprés `html_document` (Cf l'aide `?rmardown::html_document`).  
-Ne pas oublier de rajouter `:` après `html_document` si on précise des paramètres et de respecter un décalage de 2 espaces à la ligne suivante.
+On peut personnaliser la page en ajoutant des paramètres de formatage
+dans le YAML.\
+Par exemple pour personnaliser un document html, on rajoute des
+"sub-options" dans le YAML aprés `html_document` (Cf l'aide
+`?rmardown::html_document`).\
+Ne pas oublier de rajouter `:` après `html_document` si on précise des
+paramètres et de respecter un décalage de 2 espaces à la ligne suivante.
 
-Exemple:  
+Exemple:\
 Rajouter un sommaire et fixer la largeur des figures.
 
 ```{r, eval = FALSE}
@@ -203,9 +248,8 @@ output:
 ---
 ```
 
->
-ATTENTION la syntaxe de YAML est stricte notamment au niveau des indentations (2 espaces).
->
+> ATTENTION la syntaxe de YAML est stricte notamment au niveau des
+> indentations (2 espaces).
 
 Rajouter un sous-titre
 
@@ -222,8 +266,8 @@ output:
 ---
 ```
 
-Rendre le sommaire mobile sur la droite du rapport quand on parcours la page.
-
+Rendre le sommaire mobile sur la droite du rapport quand on parcours la
+page.
 
 ```{r, eval = FALSE}
 ---
@@ -239,15 +283,18 @@ output:
 ---
 ```
 
->
-ATTENTION il ne faut pas oublier de renseigner toc: TRUE avant de mettre toc_float: TRUE
->
+> ATTENTION il ne faut pas oublier de renseigner toc: TRUE avant de
+> mettre toc_float: TRUE
 
-Dans les précédents exemples de YAML, la date est saisie en "dur", il faudra penser à la mettre à jour lorsqu'on génére un rapport.  
-Pour éviter d'avoir à le faire à chaque fois (risque d'oublis ou d'erreur), on peut insérer la date courante directement, en exécutant un code R.  
-On utilise des backquotes `` ` `` pour indiquer qu'il y a du code à exécuter et on ajoute `r` pour spécifier le langage utilisé, puis enfin la fonction qui fait le job:  
- `Sys.Date()`.
- 
+Dans les précédents exemples de YAML, la date est saisie en "dur", il
+faudra penser à la mettre à jour lorsqu'on génére un rapport.\
+Pour éviter d'avoir à le faire à chaque fois (risque d'oublis ou
+d'erreur), on peut insérer la date courante directement, en exécutant un
+code R.\
+On utilise des backquotes `` ` `` pour indiquer qu'il y a du code à
+exécuter et on ajoute `r` pour spécifier le langage utilisé, puis enfin
+la fonction qui fait le job:\
+`Sys.Date()`.
 
 ```{r, eval = FALSE}
 ---
@@ -263,7 +310,8 @@ output:
 ---
 ```
 
-Exemples d'autres paramètres disponibles pour personnaliser un document HTML
+Exemples d'autres paramètres disponibles pour personnaliser un document
+HTML
 
 ```{r, eval = FALSE}
 ---
@@ -291,7 +339,8 @@ output:
 ---
 ```
 
-On peut rajouter des arguments pour plusieurs formats de sortie dans le YAML.
+On peut rajouter des arguments pour plusieurs formats de sortie dans le
+YAML.
 
 ```{r, eval  = FALSE}
 ---
@@ -307,32 +356,38 @@ output:
     toc: TRUE
 ```
 
-On peut ensuite générer le document simultanément dans les différents formats avec la fonction `render()` du package `rmarkdown`  
+On peut ensuite générer le document simultanément dans les différents
+formats avec la fonction `render()` du package `rmarkdown`
 
 `> markdown::render("monfichier.Rmd", output_format = "all")`
 
-<Br>
-Tableau présentant différentes sub-options disponibles en fonction du format de sortie:
+<Br> Tableau présentant différentes sub-options disponibles en fonction
+du format de sortie:
 
+![](fig/subs%20options%20YAML.png)
 
-![](fig/subs options YAML.png)
-
->
-NB: On peut utiliser yes/no, true/false, on/off, TRUE/FALSE
->
+> NB: On peut utiliser yes/no, true/false, on/off, TRUE/FALSE
 
 ## Formatage du texte
 
-Le formatage du texte suit généralement la syntaxe markdown.  
+Le formatage du texte suit généralement la syntaxe markdown.
 
 ### Corps du texte
 
-Pour du texte en italique, on encadre le texte avec des underscores ou des asterisques simples `_texte_` ou `*texte*`,  
+Pour du texte en italique, on encadre le texte avec des underscores ou
+des asterisques simples `_texte_` ou `*texte*`,\
+
 <center>*texte ne italique*</center>
-Pour mettre en gras, on double les underscores et les astérisques: `__texte__` ou `**texte**`,  
+
+Pour mettre en gras, on double les underscores et les astérisques:
+`__texte__` ou `**texte**`,\
+
 <center>**texte en gras**</center>
-Pour mettre des caractères en indices ou en exposants, on encadre avec des tildes et des carets `H~3~PO~4~^2-^`  
-<center>H~3~PO~4~^2-^</center>  
+
+Pour mettre des caractères en indices ou en exposants, on encadre avec
+des tildes et des carets `H~3~PO~4~^2-^`\
+
+<center>H~3~PO~4~^2-^</center>
 
 ### Titres
 
@@ -346,7 +401,9 @@ On utilise des séries de `#` pour définir la hiérarchie des titres
 ### Third-level header
 ```
 
-Dans le cas où on utilise la numérotation des titres dans le sommaire (`number_sections: TRUE` dans le YAML) on peut ponctuellement supprimer cette numérotation en rajoutant `{-}` ou `{.unnumbered}` après le titre
+Dans le cas où on utilise la numérotation des titres dans le sommaire
+(`number_sections: TRUE` dans le YAML) on peut ponctuellement supprimer
+cette numérotation en rajoutant `{-}` ou `{.unnumbered}` après le titre
 
 ```{r, eval = FALSE}
 # Preface {-}
@@ -354,7 +411,9 @@ Dans le cas où on utilise la numérotation des titres dans le sommaire (`number
 
 ### Paragraphes
 
-Les listes sont définies par `*`, `-` ou `+`, attention de sauter un ligne avant de commencer la liste et de respecter les espaces entre le symbole et le texte
+Les listes sont définies par `*`, `-` ou `+`, attention de sauter un
+ligne avant de commencer la liste et de respecter les espaces entre le
+symbole et le texte
 
 ```{r, eval = FALSE}
 - one item
@@ -365,15 +424,16 @@ Les listes sont définies par `*`, `-` ou `+`, attention de sauter un ligne avan
     - one more item
 ```
 
-- one item
-* one item
-- one item
-    - one more item
-    + one more item
-    - one more item
-    
-Pour numéroter les listes, ce n'est pas aussi souple.  
-Rajouter les chiffres avant le `.`  et **sans espace** . Les chiffres se suivront obligatoirement au sein d'un même rang hiérarchique.
+-   one item
+-   one item
+-   one item
+    -   one more item
+    -   one more item
+    -   one more item
+
+Pour numéroter les listes, ce n'est pas aussi souple.\
+Rajouter les chiffres avant le `.` et **sans espace** . Les chiffres se
+suivront obligatoirement au sein d'un même rang hiérarchique.
 
 ```{r, eval = FALSE}
 1. one item
@@ -384,14 +444,15 @@ Rajouter les chiffres avant le `.`  et **sans espace** . Les chiffres se suivron
     15. one more item
 ```
 
-1. one item
-2. one item
-3. one item
-    5. one more item
-    10. one more item
-    15. one more item
-    
-Pour mettre en avant un petit paragraphe, on encadre le texte avec des `>`
+1.  one item
+2.  one item
+3.  one item
+    5.  one more item
+    6.  one more item
+    7.  one more item
+
+Pour mettre en avant un petit paragraphe, on encadre le texte avec des
+`>`
 
 ```{r, eval = FALSE}
 >
@@ -399,27 +460,26 @@ REMARQUE
 >
 ```
 
->
-REMARQUE
->
-
+> REMARQUE
 
 ### Format ligne de code
 
-Pour transformer un texte en format ligne de code, on l'encadre par des backquotes `` `ligne de code` ``
+Pour transformer un texte en format ligne de code, on l'encadre par des
+backquotes `` `ligne de code` ``
 
->
-Remarque: pour intégrer des backquotes dans du texte, il faut les encadrer avec le mêmes nombre de quotes + 1  
-ex: ````` ```` ```code``` ```` `````, affichera ```` ```code``` ````
->
+> Remarque: pour intégrer des backquotes dans du texte, il faut les
+> encadrer avec le mêmes nombre de quotes + 1\
+> ex: ````` ```` ```code``` ```` `````, affichera ```` ```code``` ````
 
 ### Afficher des formules mathémathiques et autres caractères grecs
 
 Pour écrire grec, on rajoute des dollars **`$`**
 
-Markdown utilise la syntaxe [LaTeX](https://en.wikibooks.org/wiki/LaTeX/Mathematics)  
+Markdown utilise la syntaxe
+[LaTeX](https://en.wikibooks.org/wiki/LaTeX/Mathematics)
 
-On encadre les formules **sans espace** avec un `$` ou avec `$$` si on veut les centrer.
+On encadre les formules **sans espace** avec un `$` ou avec `$$` si on
+veut les centrer.
 
 ```{r, eval = FALSE}
 $\alpha, Alpha$
@@ -430,39 +490,47 @@ $$x_{1} + x_{2} + \cdots + x_{n}$$
 $$\lim_{x \to \infty} f(x)$$
 ```
 
-$\alpha, Alpha$  
-$\beta, Beta$  
-$\gamma, \Gamma$  
-$x = y$  
-$$x_{1} + x_{2} + \cdots + x_{n}$$  
+$\alpha, Alpha$\
+$\beta, Beta$\
+$\gamma, \Gamma$\
+$x = y$\
+$$x_{1} + x_{2} + \cdots + x_{n}$$\
 $$\lim_{x \to \infty} f(x)$$
 
-Vous noterez que RStudio prévisualise en popup les formules mathématiques encadrées par `$` et affiche directement dans le script les formules encadrées par `$$`  
+Vous noterez que RStudio prévisualise en popup les formules
+mathématiques encadrées par `$` et affiche directement dans le script
+les formules encadrées par `$$`
 
-On peut vraiment faire ce qu'on veut si on prend le temps de regarder la doc
+On peut vraiment faire ce qu'on veut si on prend le temps de regarder la
+doc
 
 ```{r, eval = FALSE}
 $$f(k) = {n \choose k} p^{k} (1-p)^{n-k}$$
 ```
 
 $$f(k) = {n \choose k} p^{k} (1-p)^{n-k}$$
-
 
 ### Hyperlink
 
-R Markdown reconnaît les liens internet automatiquement (quand ils commencent par http:// ou https://), ils seront affichés en bleu et le lien s'ouvrira si on clique dessus.
+R Markdown reconnaît les liens internet automatiquement (quand ils
+commencent par <http://> ou <https://>), ils seront affichés en bleu et
+le lien s'ouvrira si on clique dessus.
 
-Néanmoins pour gagner en lisibilité on peut associer un tag qui sera affiché à la place de l'adresse complète.
+Néanmoins pour gagner en lisibilité on peut associer un tag qui sera
+affiché à la place de l'adresse complète.
 
 ```{r, eval = FALSE}
 Cliquer [ICI](https://en.wikibooks.org/wiki/LaTeX/Mathematics) pour retrouver la page de la doc de LaTeX
 ```
 
-Cliquer [ICI](https://en.wikibooks.org/wiki/LaTeX/Mathematics) pour retrouver la page de la doc de LaTeX
+Cliquer [ICI](https://en.wikibooks.org/wiki/LaTeX/Mathematics) pour
+retrouver la page de la doc de LaTeX
 
 ### Images
 
-C'est exactement le même principe pour insérer des liens, il faut juste rajouter un `!` en début et mettre le chemin de l'image. Dans l'exemple suivant, on utilise un chemin relatif par rapport au répertoire courant.
+C'est exactement le même principe pour insérer des liens, il faut juste
+rajouter un `!` en début et mettre le chemin de l'image. Dans l'exemple
+suivant, on utilise un chemin relatif par rapport au répertoire courant.
 
 ```{r, eval = FALSE}
 ![BLOB](fig/blob.png)
@@ -470,18 +538,25 @@ C'est exactement le même principe pour insérer des liens, il faut juste rajout
 
 ![BLOB](fig/blob.png)
 
-
 ### Renvois (footnotes)
 
-Les renvois ou footnote sont automatiquement numérotés et ajoutés en fin de document. Ils sont insérés dans le texte en utilisant les crochets et le caret: `^[texte du renvoi]` ^[texte du renvoi].
+Les renvois ou footnote sont automatiquement numérotés et ajoutés en fin
+de document. Ils sont insérés dans le texte en utilisant les crochets et
+le caret: `^[texte du renvoi]` [^1].
 
+[^1]: texte du renvoi
 
 ### Citations
 
-On peut intégrer des citations dans le texte. R Markdown reconnaît la syntaxe des fichiers BibTeX (format exportable depuis les logiciels de bibliographies).  
-Toutes les références insérées dans le texte seront reportées en bas du document avec des renvois automatiques.  
-Pour utiliser cette option, rajouter le champ `bibliography` ainsi que le chemin vers le fichier BibTeX dans le YAML. On rajoute le champ `link-citations` pour lier les références dans le texte avec le bas du document.  
-
+On peut intégrer des citations dans le texte. R Markdown reconnaît la
+syntaxe des fichiers BibTeX (format exportable depuis les logiciels de
+bibliographies).\
+Toutes les références insérées dans le texte seront reportées en bas du
+document avec des renvois automatiques.\
+Pour utiliser cette option, rajouter le champ `bibliography` ainsi que
+le chemin vers le fichier BibTeX dans le YAML. On rajoute le champ
+`link-citations` pour lier les références dans le texte avec le bas du
+document.
 
 ```{r, eval = FALSE}
 title: "Tutoriel R Markdown"
@@ -496,18 +571,21 @@ bibliography: ["biblio/biblio.bib"]
 link-citations: yes
 ```
 
-Dans le script, une référence est introduite comme ceci `@grolemund_r_nodate`  @grolemund_r_nodate, on rajoute des crochets pour mettre la référence entre parenthèses `[@grolemund_r_nodate]`  [@grolemund_r_nodate]. 
+Dans le script, une référence est introduite comme ceci
+`@grolemund_r_nodate` @grolemund_r_nodate, on rajoute des crochets pour
+mettre la référence entre parenthèses `[@grolemund_r_nodate]`
+[@grolemund_r_nodate].
 
 <Br><Br>
-
 
 ## Ligne de code R: "chunks"
 
 Le code R est inséré par l'intermédiaire de ce qu'on appelle des chunks.
 
-Un chunk est délimité par 2 séries de 3 backquotes, par défaut le code inséré dans un chunk est affiché, exécuté et le résultat affiché.  
+Un chunk est délimité par 2 séries de 3 backquotes, par défaut le code
+inséré dans un chunk est affiché, exécuté et le résultat affiché.
 
-````r
+```` r
 # dans le script
 ```{r}
 x = 2 + 2
@@ -522,78 +600,89 @@ x
 
 RStudio dispose de raccourcis pour ajouter des chunks dans le script.
 
-- bouton `insert --> R` 
-- combinaison de touches <kbd>Ctrl</kbd> + <kbd>Alt</kbd> + <kbd>i</kbd>
+-   bouton `insert --> R`
+-   combinaison de touches <kbd>Ctrl</kbd> + <kbd>Alt</kbd> +
+    <kbd>i</kbd>
 
-
-Par défaut, le code est exécuté et le résultat affiché à la suite dans 2 boîtes séparées.
-De nombreuses options permettent de contrôler le résultats d'un chunk.
+Par défaut, le code est exécuté et le résultat affiché à la suite dans 2
+boîtes séparées. De nombreuses options permettent de contrôler le
+résultats d'un chunk.
 
 ### Les options de chunk
 
-Il existe beaucoup d'options qui permettent de contrôler le comportement d'un chunk, que ce soit pour du calcul, des graphs, des tableaux ou du texte. Ces options sont insérées entre les accolades après le `r,` et sont de la forme `tag = value`.  
+Il existe beaucoup d'options qui permettent de contrôler le comportement
+d'un chunk, que ce soit pour du calcul, des graphs, des tableaux ou du
+texte. Ces options sont insérées entre les accolades après le `r,` et
+sont de la forme `tag = value`.\
 Ce sont des options du package `knitr`.
-
 
 <Br>
 
-Il est possible (et même recommandé) de nommer chaque chunk (facilite la navigation dans RStudio). 
+Il est possible (et même recommandé) de nommer chaque chunk (facilite la
+navigation dans RStudio).
 
->
-ATTENTION
-chaque label de chunk doit être unique, éviter également les points et les espaces 
->
+> ATTENTION chaque label de chunk doit être unique, éviter également les
+> points et les espaces
 
-Le label suit immédiatement le r après un espace, seules les options sont après une virgule.
+Le label suit immédiatement le r après un espace, seules les options
+sont après une virgule.
 
->
-*{r label_du_chunk, options}*
->
+> *{r label_du_chunk, options}*
 
-La documentation complète des options se trouvent [ici](https://yihui.name/knitr/options).
+La documentation complète des options se trouvent
+[ici](https://yihui.name/knitr/options).
 
-Passons en revue les plus utilisées en fonction de leur domaine d'application.  
+Passons en revue les plus utilisées en fonction de leur domaine
+d'application.\
 <Br><Br>
 
 #### Evaluation du code
 
- - `eval`: booleen, le code est exécuté ou pas
- 
+-   `eval`: booleen, le code est exécuté ou pas
+
 #### Affichage du texte
 
- - `echo`: booleen, affiche le code ou pas
- - `include`: booleen, affiche le résultat ou pas. Le code est évalué dans tous les cas, les graphes générés mais pas affichés.
- - `collapse`: booleen, affiche le code et le résultat dans la même boîte
- - `warning`: booleen, affiche les warnings ou pas
- - `error`: booleen, affiche les errors ou pas
- - `message`: booleen, affiche les messages ou pas (utile pour le chargement des packages)
- - `results`: 
-   - "asis": affiche le résultat en style console R (brut)
-   - "hide": cache le résultat (sauf si warning, message ou error)
-   - "hold": regroupe et affiche tous les résultats du chunk à la fin de la boîte du code
-   
+-   `echo`: booleen, affiche le code ou pas
+-   `include`: booleen, affiche le résultat ou pas. Le code est évalué
+    dans tous les cas, les graphes générés mais pas affichés.
+-   `collapse`: booleen, affiche le code et le résultat dans la même
+    boîte
+-   `warning`: booleen, affiche les warnings ou pas
+-   `error`: booleen, affiche les errors ou pas
+-   `message`: booleen, affiche les messages ou pas (utile pour le
+    chargement des packages)
+-   `results`:
+    -   "asis": affiche le résultat en style console R (brut)
+    -   "hide": cache le résultat (sauf si warning, message ou error)
+    -   "hold": regroupe et affiche tous les résultats du chunk à la fin
+        de la boîte du code
+
 #### Formatage du texte de sortie
 
- - `prompt`: booleen, ajoute le prompt au début des lignes de codes (empêche les copier-coller direct dans la console)
- - `comment`: "string", défini le prefixe de commentaire (`##` en général)
- - `highlight`: booleen, ajoute la coloration syntaxique au code
+-   `prompt`: booleen, ajoute le prompt au début des lignes de codes
+    (empêche les copier-coller direct dans la console)
+-   `comment`: "string", défini le prefixe de commentaire (`##` en
+    général)
+-   `highlight`: booleen, ajoute la coloration syntaxique au code
 
 #### Graphes
 
- - `fig.width`, `fig.height`: dimensions du graphe en pouces
- - `fig.dim`: raccourci pour `fig.width` + `fig.height` (ex: `fig.dim = c(5, 7)`)
- - `fig.align`: "left", "center", "right",   alignement en largeur
- - `fig.show`: 
-   - "hold": regroupe et affiche tous les graphes à la fin de la boîte
-   - "hide": génére les graphes mais ne les affiche pas
- - `fig.keep`: 
-   - "first": affiche que le premier graphe
-   - "last": affiche que le dernier graphe
- - `dpi`: définition
- 
+-   `fig.width`, `fig.height`: dimensions du graphe en pouces
+-   `fig.dim`: raccourci pour `fig.width` + `fig.height` (ex:
+    `fig.dim = c(5, 7)`)
+-   `fig.align`: "left", "center", "right", alignement en largeur
+-   `fig.show`:
+    -   "hold": regroupe et affiche tous les graphes à la fin de la
+        boîte
+    -   "hide": génére les graphes mais ne les affiche pas
+-   `fig.keep`:
+    -   "first": affiche que le premier graphe
+    -   "last": affiche que le dernier graphe
+-   `dpi`: définition
+
 **Exemple de chunk avec production d'un graphe**
 
-````markdown
+```` markdown
 `r ''````{r, fig.width = 6, fig.align = 'center'}
 plot(1:10,1:10)
 ```
@@ -607,7 +696,7 @@ plot(1:10,1:10)
 
 Les 3 graphes sont affichés à la fin, après les lignes de code.
 
-````markdown
+```` markdown
 `r ''````{r, fig.width = 6, fig.align = 'center', fig.show = "hold"}
 plot(1:10,1:10)
 plot(1:5,1:5)
@@ -621,21 +710,25 @@ plot(1:5,1:5)
 plot(1:50,1:50)
 ```
 
-> REMARQUE:  
-On peut utiliser les chunks pour insérer une image plutôt que d'utiliser la syntaxe R Markdown `![alt text or image title](path/to/image)`. L'intérêt est d'avoir plus de contrôle sur le formattage.  
-On utilise l'option `include_graphics`
-````markdown
+> REMARQUE:\
+> On peut utiliser les chunks pour insérer une image plutôt que
+> d'utiliser la syntaxe R Markdown
+> `![alt text or image title](path/to/image)`. L'intérêt est d'avoir
+> plus de contrôle sur le formattage.\
+> On utilise l'option `include_graphics`
+
+```` markdown
 `r ''````{r, fig.width = 6, fig.align = 'right'}
 knitr::include_graphics('fig/blob.png')
 ```
 ````
->
 
 ```{r, fig.width = 6, fig.align = 'right'}
 knitr::include_graphics('fig/blob.png')
 ```
 
 Liste complète des options d'un chunk
+
 ```{r}
 str(knitr::opts_chunk$get())
 ```
@@ -645,36 +738,38 @@ str(knitr::opts_chunk$get())
 #### Chunk setup
 
 On peut définir des options de chunk pour tous les chunk du document.
-C'est le rôle du chunk de "setup".  
-Il est placé en début de document et suit la syntaxe suivante `knitr::opts_chunk$set`  
+C'est le rôle du chunk de "setup".\
+Il est placé en début de document et suit la syntaxe suivante
+`knitr::opts_chunk$set`
 
-
-````markdown
+```` markdown
 ```r ''````{r setup, include = FALSE}
 knitr::opts_chunk$set(echo = TRUE, fig.align = "center")
 ```
 ````
 
-Les options de chunk précisées dans un chunk du document auront la priorité sur les options du chunk setup.
+Les options de chunk précisées dans un chunk du document auront la
+priorité sur les options du chunk setup.
 
-<Br> 
+<Br>
 
 #### Inline code chunk
 
-On peut exécuter du code R au milieu d'un texte sans avoir à créér un chunk. Pour cela il faut insérer le code entre `` `r ` ``.
+On peut exécuter du code R au milieu d'un texte sans avoir à créér un
+chunk. Pour cela il faut insérer le code entre `` `r ` ``.
 
 ```{r, eval = FALSE}
 `r Sys.Date()`
 ```
 
-Date de compilation du document `r Sys.Date()`
-<Br>
-<Br>
+Date de compilation du document `r Sys.Date()` <Br> <Br>
 
 ### Autres langages
 
-Il est possible d'exécuter des lignes de codes d'autres langages que R.  
-Il suffit de remplacer lr `r`en début de chunk par le nom de langage, par exemple pour lancer du code python, on utilisera un chunk avec le label suivant: `{python }`
+Il est possible d'exécuter des lignes de codes d'autres langages que R.\
+Il suffit de remplacer lr `r`en début de chunk par le nom de langage,
+par exemple pour lancer du code python, on utilisera un chunk avec le
+label suivant: `{python }`
 
 Voici une liste de langage autorisés.
 
@@ -682,15 +777,18 @@ Voici une liste de langage autorisés.
 names(knitr::knit_engines$get())
 ```
 
-
 ## Tables
 
 ### Tables en markdown
 
-Afficher des data.frame sous forme de tableaux dans un document est une opération qui peut s'avérer complexe en fonction de la table elle-même (taille) ou des informations que l'on veut mettre en avant.  
-<Br>
-La syntaxe markdown permet de créér des tableaux directement dans le texte, mais ce n'est pas trés pratique et le résultat n'est pas facilement personnalisable.  
-Il faut jouer avec les `-`, les `|` et les `:` pour déterminer les différents champs.
+Afficher des data.frame sous forme de tableaux dans un document est une
+opération qui peut s'avérer complexe en fonction de la table elle-même
+(taille) ou des informations que l'on veut mettre en avant.\
+<Br> La syntaxe markdown permet de créér des tableaux directement dans
+le texte, mais ce n'est pas trés pratique et le résultat n'est pas
+facilement personnalisable.\
+Il faut jouer avec les `-`, les `|` et les `:` pour déterminer les
+différents champs.
 
 ```{r, eval = FALSE}
 | Auteur  | Package   | Année |
@@ -699,63 +797,71 @@ Il faut jouer avec les `-`, les `|` et les `:` pour déterminer les différents 
 | Hadley Wickham | ggplot2   | 2005  | 
 ```
 
-| Auteur  | Package   | Année |
-|:------------- |-------:|:----:|
-| Yixui Xie   | knitr     | 2012  |
-| Hadley Wickham | ggplot2   | 2005  | 
+| Auteur         | Package | Année |
+|:---------------|--------:|:-----:|
+| Yixui Xie      |   knitr | 2012  |
+| Hadley Wickham | ggplot2 | 2005  |
 
-
-Une des méthodes les plus directe pour afficher une table (`data.frame`) est d'utiliser la fonction `datatable` du package `DT`.  
-Elle affiche par défaut une table intéractive avec de nombreuses options 
+Une des méthodes les plus directe pour afficher une table (`data.frame`)
+est d'utiliser la fonction `datatable` du package `DT`.\
+Elle affiche par défaut une table intéractive avec de nombreuses options
 
 La fonction `datatable` du package `DT` permet:
 
- - Affichage paginé
- - Tri sur chaque colonne
- - Tri par recherche
+-   Affichage paginé
+-   Tri sur chaque colonne
+-   Tri par recherche
 
-La fonction `datatable` comporte de nombreuses options pour personnaliser la table en sortie (Cf [DT page](https://rstudio.github.io/DT/)).
+La fonction `datatable` comporte de nombreuses options pour
+personnaliser la table en sortie (Cf [DT
+page](https://rstudio.github.io/DT/)).
 
 ```{r, eval = TRUE, warning = FALSE}
 library(DT)
 datatable(iris)
 ```
 
->
-**ATTENTION** 
-Les tableaux produits sont intéractifs, ils ne sont complètement utilisables que dans des pages HTML  
-Si vous devez produire un document PDF, c'est possible, mais dans ce cas les tableaux insérés dans le document seront des images non modifiables.  
-Pour cela, il faut installer le package webshot et installer PhantomJS (sous R).  
-`install.packages("webshot")`  
-`webshot::install_phantomjs()`
->
+> **ATTENTION** Les tableaux produits sont intéractifs, ils ne sont
+> complètement utilisables que dans des pages HTML\
+> Si vous devez produire un document PDF, c'est possible, mais dans ce
+> cas les tableaux insérés dans le document seront des images non
+> modifiables.\
+> Pour cela, il faut installer le package webshot et installer PhantomJS
+> (sous R).\
+> `install.packages("webshot")`\
+> `webshot::install_phantomjs()`
 
-Il existe de nombreux packages qui permettent de formater les tables, ci-après une liste (non exhaustive) de packages:
-<Br>
+Il existe de nombreux packages qui permettent de formater les tables,
+ci-après une liste (non exhaustive) de packages: <Br>
 
 Packages:
- 
- - DT: https://rstudio.github.io/DT/
- - flextable: https://davidgohel.github.io/flextable/
- - kableExtra (extension de kable): https://cran.r-project.org/web/packages/kableExtra/vignettes/awesome_table_in_html.html
- - htmlTable: https://cran.r-project.org/web/packages/htmlTable/vignettes/tables.html
- - table1: https://cran.r-project.org/web/packages/table1/vignettes/table1-examples.html
- - ztable: https://cran.r-project.org/web/packages/ztable/vignettes/ztable.html
+
+-   DT: <https://rstudio.github.io/DT/>
+-   flextable: <https://davidgohel.github.io/flextable/>
+-   kableExtra (extension de kable):
+    <https://cran.r-project.org/web/packages/kableExtra/vignettes/awesome_table_in_html.html>
+-   htmlTable:
+    <https://cran.r-project.org/web/packages/htmlTable/vignettes/tables.html>
+-   table1:
+    <https://cran.r-project.org/web/packages/table1/vignettes/table1-examples.html>
+-   ztable:
+    <https://cran.r-project.org/web/packages/ztable/vignettes/ztable.html>
 
 <Br>
 
-Voyons un peu plus en détail les packages `kableExtra` et `flextable`.  
-
+Voyons un peu plus en détail les packages `kableExtra` et `flextable`.
 
 ### Package `kableExtra`
 
-C'est [ICI](http://haozhu233.github.io/kableExtra/) pour une présentation détaillée des possibilité du package.
+C'est [ICI](http://haozhu233.github.io/kableExtra/) pour une
+présentation détaillée des possibilité du package.
 
 <Br><Br>
 
 #### Personnalisation d'une table avec `kable_styling`
 
-La fonction `kable_styling` va nous permettre de personnaliser le tableau.
+La fonction `kable_styling` va nous permettre de personnaliser le
+tableau.
 
 ```{r}
 suppressPackageStartupMessages(library(kableExtra))
@@ -765,7 +871,8 @@ mtcars %>%
   kable_styling()
 ```
 
-Options possibles: "basic", "striped", "bordered", "hover", "condensed" and "responsive"
+Options possibles: "basic", "striped", "bordered", "hover", "condensed"
+and "responsive"
 
 ```{r}
 mtcars %>% 
@@ -785,7 +892,8 @@ mtcars %>%
                 full_width = FALSE)
 ```
 
-Positionner la table à gauche et l'ajuster pour qu'elle n'utilise pas toute la largeur de la page
+Positionner la table à gauche et l'ajuster pour qu'elle n'utilise pas
+toute la largeur de la page
 
 ```{r}
 mtcars %>% 
@@ -809,22 +917,23 @@ mtcars %>%
                 position = "float_right")
 ```
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras sit amet mauris in ex ultricies elementum vel rutrum dolor. Phasellus tempor convallis dui, in hendrerit mauris placerat scelerisque. 
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras sit amet
+mauris in ex ultricies elementum vel rutrum dolor. Phasellus tempor
+convallis dui, in hendrerit mauris placerat scelerisque.
 
 <Br><Br>
 
 #### Personnalisation des lignes et colonnes avec les fonctions `row_spec` et `column_spec`
 
-Personnalisation des lignes: `row_spec`  
+Personnalisation des lignes: `row_spec`
 
- - row: sélectionne les lignes (0, pour les en-têtes)
- - bold, italic, underline, strikeout: booleen, format du texte
- - color, background: couleur du texte et du fond
- - align: left, right, center, justify
- - font_size
- - angle
- 
- 
+-   row: sélectionne les lignes (0, pour les en-têtes)
+-   bold, italic, underline, strikeout: booleen, format du texte
+-   color, background: couleur du texte et du fond
+-   align: left, right, center, justify
+-   font_size
+-   angle
+
 ```{r}
 mtcars %>% 
   head(5) %>% 
@@ -841,11 +950,11 @@ mtcars %>%
            background = "black")
 ```
 
-Personnalisation des colonnes: `column_spec`  
+Personnalisation des colonnes: `column_spec`
 
- - column: sélectionne les colonnes (1 correspond aux rownames)
- - width: largeur des colonnes (rajouter l'unité)
- - border_left, border_right: booleen, rajoute des bordures
+-   column: sélectionne les colonnes (1 correspond aux rownames)
+-   width: largeur des colonnes (rajouter l'unité)
+-   border_left, border_right: booleen, rajoute des bordures
 
 ```{r}
 mtcars %>% 
@@ -871,18 +980,21 @@ mtcars %>%
 
 #### Personnalisation des cellules avec les fonctions `cell_spec`
 
-Cette fonction est utilisée pour mettre en évidence le résultat d'un tri conditionnel sur les colonnes d'une table.
+Cette fonction est utilisée pour mettre en évidence le résultat d'un tri
+conditionnel sur les colonnes d'une table.
 
->
-ATTENTION: cette fonction s'applique directement sur le data.frame avant de l'envoyer dans la fonction `kable()`.
-Il faut rajouter `escape = FALSE` en argument à la fonction `kable`
->
+> ATTENTION: cette fonction s'applique directement sur le data.frame
+> avant de l'envoyer dans la fonction `kable()`. Il faut rajouter
+> `escape = FALSE` en argument à la fonction `kable`
 
-Dans l'exemple suivant, on créé 3 nouvelles colonnes avec la fonction `mutate` de dplyr:
+Dans l'exemple suivant, on créé 3 nouvelles colonnes avec la fonction
+`mutate` de dplyr:
 
- - `car` = on récupére les rownames de la table 
- - `mpg` = affiche en bleu les "mpg" > 20 sinon affiche en rouge
- - `cyl` = affiche en blanc, aligne au centre avec une rotation de 45°, la couleur de background de chaque cellule est une nuance de gris associée à une valeur de la "cyl" transformée en facteur.
+-   `car` = on récupére les rownames de la table
+-   `mpg` = affiche en bleu les "mpg" \> 20 sinon affiche en rouge
+-   `cyl` = affiche en blanc, aligne au centre avec une rotation de 45°,
+    la couleur de background de chaque cellule est une nuance de gris
+    associée à une valeur de la "cyl" transformée en facteur.
 
 Le data.frame ainsi créé est ensuite envoyé dans kable
 
@@ -901,33 +1013,38 @@ mtcars[1:10, 1:2] %>%
   kable_styling("striped", full_width = F)
 ```
 
-
-<Br> 
+<Br>
 
 #### Fonctions `text_spec`
 
-La fonction `text_spec` peut être utilisée directement dans un RMarkdown pour formater du texte:
+La fonction `text_spec` peut être utilisée directement dans un RMarkdown
+pour formater du texte:
 
 On peut facilement appliquer les arguments suivant à du texte.
 
- - **bold, italic, underline, strikeout**: booleen, format du texte
- - **color, background**: couleur du texte et du fond
- - **align**: left, right, center, justify
- - **font_size**
- - **angle**
+-   **bold, italic, underline, strikeout**: booleen, format du texte
+-   **color, background**: couleur du texte et du fond
+-   **align**: left, right, center, justify
+-   **font_size**
+-   **angle**
 
-If you want to go `text_spec("fast", bold = T, color = "red")`, go `text_spec("alone", bold = T, color = "red")`.  
-If you want to go `text_spec("further", bold = T, color = "green")`, go `text_spec("together", bold = T, color = "green")`.
+If you want to go `text_spec("fast", bold = T, color = "red")`, go
+`text_spec("alone", bold = T, color = "red")`.\
+If you want to go `text_spec("further", bold = T, color = "green")`, go
+`text_spec("together", bold = T, color = "green")`.
 
-<Br><Br>
-If you want to go `r text_spec("fast", bold = T, color = "red")`, go `r text_spec("alone", bold = T, color = "red")`.
-If you want to go `r text_spec("further", bold = T, color = "green")`, go `r text_spec("together", bold = T, color = "green")`.
+<Br><Br> If you want to go
+`r text_spec("fast", bold = T, color = "red")`, go
+`r text_spec("alone", bold = T, color = "red")`. If you want to go
+`r text_spec("further", bold = T, color = "green")`, go
+`r text_spec("together", bold = T, color = "green")`.
 
 <Br><Br>
 
 #### Fonction `scroll_box` pour les rapports HTML uniquement
 
-La fonction `scroll_box` ajoute des ascenceurs verticaux et horizontaux quand les tables sont trop grandes.
+La fonction `scroll_box` ajoute des ascenceurs verticaux et horizontaux
+quand les tables sont trop grandes.
 
 ```{r, eval = TRUE}
 kable(mtcars) %>%
@@ -939,11 +1056,10 @@ kable(mtcars) %>%
 
 #### Sauvegarde d'une table
 
-La fonction `save_kable`permet de sauvegarder une table dans 3 formats (.html, .png, .pdf et .jpeg)
+La fonction `save_kable`permet de sauvegarder une table dans 3 formats
+(.html, .png, .pdf et .jpeg)
 
->
-Queques problèmes avec l'exportation en pdf sous windows
->
+> Queques problèmes avec l'exportation en pdf sous windows
 
 ```{r, eval = F}
 mtcars %>% 
@@ -957,7 +1073,8 @@ save_kable(file = "Kable_table.pdf", self_contained = T)
 
 ### Package `flextable`
 
-Le package `flextable` permet d'obtenir un rendu "LaTeX" dans des pages HTML. 
+Le package `flextable` permet d'obtenir un rendu "LaTeX" dans des pages
+HTML.
 
 ```{r}
 suppressPackageStartupMessages(library(flextable))
@@ -966,9 +1083,10 @@ mtcars %>%
   flextable()
 ```
 
-<Br>
-Il comporte tout une panoplie de fonctions qui permettent de personnaliser les tables.  
-Se référer au [site](https://davidgohel.github.io/flextable/index.html) pour se rendre compte de l'étendue des possibilités.
+<Br> Il comporte tout une panoplie de fonctions qui permettent de
+personnaliser les tables.\
+Se référer au [site](https://davidgohel.github.io/flextable/index.html)
+pour se rendre compte de l'étendue des possibilités.
 
 ```{r}
 iris %>% 
@@ -984,26 +1102,34 @@ iris %>%
 
 ## Thème
 
-Parmi les options qui contrôle l'apparence du document HTML, il y a l'option `theme` qui permet d'appliquer un thème à tout le document.  
-Vous pouvez essayer un des thèmes suivants:  
-default, cerulean, journal, flatly, darkly, readable, spacelab, united, cosmo, lumen, paper, sandstone, simplex, and yeti.  
-Le thème de ce document est `simplex`. 
+Parmi les options qui contrôle l'apparence du document HTML, il y a
+l'option `theme` qui permet d'appliquer un thème à tout le document.\
+Vous pouvez essayer un des thèmes suivants:\
+default, cerulean, journal, flatly, darkly, readable, spacelab, united,
+cosmo, lumen, paper, sandstone, simplex, and yeti.\
+Le thème de ce document est `simplex`.
 
+## Option `Cache = TRUE`
 
-## Option `Cache = TRUE` 
- 
-L'option de cache permet de sauvegarder le résultats d'un chunk pour éviter d'avoir à le recalculer à chaque knitr du script. 
-C'est très utile lorsque les temps de calcul sont longs mais cette option doit être utilisée avec précaution.  
+L'option de cache permet de sauvegarder le résultats d'un chunk pour
+éviter d'avoir à le recalculer à chaque knitr du script. C'est très
+utile lorsque les temps de calcul sont longs mais cette option doit être
+utilisée avec précaution.
 
-En effet, un chunk ne sera réévalué que lorsque le code à l'intérieur d'un chunk aura changé. Les risques d'erreurs arrivent si un chunk non modifié utilise un objet qui lui aura été modifié dans un chunk précédent, la modification de l'objet ne sera pas prise en compte dans le chunk "en cache".
+En effet, un chunk ne sera réévalué que lorsque le code à l'intérieur
+d'un chunk aura changé. Les risques d'erreurs arrivent si un chunk non
+modifié utilise un objet qui lui aura été modifié dans un chunk
+précédent, la modification de l'objet ne sera pas prise en compte dans
+le chunk "en cache".
 
-Pour pallier ces accidents, il y a une option en-dessous du bouton "knit" qui permet de vider le cache.
-
+Pour pallier ces accidents, il y a une option en-dessous du bouton
+"knit" qui permet de vider le cache.
 
 ## Onglets
 
-R Markdown permet d'insérer des onglets, très utile pour rendre un document plus facile à lire quand les sorties sont longues.  
-Il faut rajouter l'attribut `{.tabset}` à la suite d'un titre.  
+R Markdown permet d'insérer des onglets, très utile pour rendre un
+document plus facile à lire quand les sorties sont longues.\
+Il faut rajouter l'attribut `{.tabset}` à la suite d'un titre.\
 Les sous-titres suivants apparaitront dans des onglets différents.
 
 ```{r, eval = FALSE}
@@ -1022,14 +1148,11 @@ plot(sin(seq(1,50,0.2)), ylim = c(-2, 2), type = "l")
 
 #### Onglet n°1
 
-
 ```{r}
 plot(sin(seq(1,10,0.2)), ylim = c(-2, 2), type = "l")
 ```
 
-
 #### Onglet n°2
-
 
 ```{r}
 plot(sin(seq(1,50,0.2)), ylim = c(-2, 2), type = "l")
@@ -1037,7 +1160,8 @@ plot(sin(seq(1,50,0.2)), ylim = c(-2, 2), type = "l")
 
 ### 
 
-Les attributs `.tabset-fade` et `.tabset-pills` permettent de contrôler l'apparence et le contrôle des onglets
+Les attributs `.tabset-fade` et `.tabset-pills` permettent de contrôler
+l'apparence et le contrôle des onglets
 
 ```{r, eval = FALSE}
 ## Section avec onglets {.tabset.tabset-fade .tabset-pills}
@@ -1051,7 +1175,6 @@ plot(cos(seq(1,10,0.2)), ylim = c(-2, 2), type = "l")
 plot(cos(seq(1,50,0.2)), ylim = c(-2, 2), type = "l")
 ```
 
-
 ### Section avec onglets {.tabset .tabset-fade .tabset-pills}
 
 #### Onglet n°1
@@ -1060,55 +1183,74 @@ plot(cos(seq(1,50,0.2)), ylim = c(-2, 2), type = "l")
 plot(cos(seq(1,10,0.2)), ylim = c(-2, 2), type = "l")
 ```
 
-
 #### Onglet n°2
 
 ```{r}
 plot(cos(seq(1,50,0.2)), ylim = c(-2, 2), type = "l")
 ```
 
-
 ## Un peu d'HTML
 
-Le balisage HTML est directement utilisable dans le fichier source, même si on perd en lisibilité dans le script...  
+Le balisage HTML est directement utilisable dans le fichier source, même
+si on perd en lisibilité dans le script...
 
-On peut utiliser directement du code HTML pour modifier ponctuellemnt le format d'un texte. La syntaxe de l'HTML est basée sur l'utilisation de balises d'ouvertures et de fermetures (<> et </>) qui encadrent le texte à modifier.
+On peut utiliser directement du code HTML pour modifier ponctuellemnt le
+format d'un texte. La syntaxe de l'HTML est basée sur l'utilisation de
+balises d'ouvertures et de fermetures (\<\> et \</\>) qui encadrent le
+texte à modifier.
 
-On commence par un cas particulier qui n'a besoin que d'une balise !  
-<Br>
-`<Br> : retour à la ligne`  
-<Br>
-`<center>Texte centré</center>`
-<center>Texte centré</center>  
-`<s>texte barré</s> : `  
-<s>texte barré</s>   
-`<font size = "6">Taille 6</font>`  
-<font size = "6">Taille 6</font>  
-`<font face="Arial">Change la police</font>`  
-<font face="Arial">Change la police</font>  
-`<font style="color:red"></font>`  
-<font style="color:red">Change la couleur</font>  
+On commence par un cas particulier qui n'a besoin que d'une balise !\
+<Br> `<Br> : retour à la ligne`\
+<Br> `<center>Texte centré</center>`
 
-On peut cummuler les options:  
-`<Br><Br> # saute 2 lignes`  
+<center>Texte centré</center>
+
+`<s>texte barré</s> :`\
+<s>texte barré</s>\
+`<font size = "6">Taille 6</font>`\
+<font size = "6">Taille 6</font>\
+`<font face="Arial">Change la police</font>`\
+<font face="Arial">Change la police</font>\
+`<font style="color:red"></font>`\
+<font style="color:red">Change la couleur</font>
+
+On peut cummuler les options:\
+`<Br><Br> # saute 2 lignes`\
 <Br><Br>
-`<center><s><font face="Courier New" size = "10" style="color:red">CUSTOMISATION</font></s></center>`  
+`<center><s><font face="Courier New" size = "10" style="color:red">CUSTOMISATION</font></s></center>`\
 <Br><Br>
+
 <center><s><font face="Courier New" size = "10" style="color:red">CUSTOMISATION</font></s></center>
+
 <Br><Br>
 
-Format touche de clavier 
-`<kbd>Alt</kbd> + <kbd>Shift</kbd>` <kbd>Alt</kbd> + <kbd>Shift</kbd>
+Format touche de clavier `<kbd>Alt</kbd> + <kbd>Shift</kbd>`
+<kbd>Alt</kbd> + <kbd>Shift</kbd>
 
+Aligner un paragraphe (ne pas oublier les 2 espaces en fin de lignes pour revenir à la ligne)
+
+```{r, eval = FALSE}
+<p align="center">
+Ce texte est centré  
+Cette ligne aussi
+</p>
+```
+
+<p align="center">
+Ce texte est centré  
+Cette ligne aussi
+</p>
 
 ## Rapports paramétrables
 
-Autre avantage des rapports R Markdown est la possibilité de lancer un script de RMarkdown sur plusieurs jeux de données en ne changeant que un ou plusieurs paramètres mais sans rien changer du script.  
+Autre avantage des rapports R Markdown est la possibilité de lancer un
+script de RMarkdown sur plusieurs jeux de données en ne changeant que un
+ou plusieurs paramètres mais sans rien changer du script.
 
-Les paramètres modifiables sont déclarés dans le YAML.  
-L'exécution de R Markdown est lancée avec la fonction `render()` dans la console R.  
+Les paramètres modifiables sont déclarés dans le YAML.\
+L'exécution de R Markdown est lancée avec la fonction `render()` dans la
+console R.\
 Elle prend en argument le fichier markdown et le ou les paramètre(s).
-
 
 ### Exemple de rapport paramétré
 
@@ -1147,14 +1289,16 @@ Le script est sauvegardé dans: "rapport_parametre.Rmd"
 
 #### Création des jeux de données
 
-On récupère les datasets `iris` et `cars` inclus dans R, que l'on exporte en ".csv".
+On récupère les datasets `iris` et `cars` inclus dans R, que l'on
+exporte en ".csv".
 
 ```{r, eval = FALSE}
 write.table(iris, file = "iris.csv", sep = ";")
 write.table(cars, file = "cars.csv", sep = ";")
 ```
 
-On lance l'exécution du R Markdown pour chaque fichier avec la fonction `render()` dans la console R.
+On lance l'exécution du R Markdown pour chaque fichier avec la fonction
+`render()` dans la console R.
 
 ```{r, eval = FALSE}
 rmarkdown::render(input = "rapport_parametre.Rmd", ## script rmarkdown
@@ -1168,17 +1312,20 @@ rmarkdown::render(input = "rapport_parametre.Rmd", ## script rmarkdown
        output_file = "rapport_iris") ## chemin et nom du rapport généré
 ```
 
-<Br>
-On a généré 2 rapports `rapport_cars.html` et `rapport_iris.html` dans le répertoire courant
+<Br> On a généré 2 rapports `rapport_cars.html` et `rapport_iris.html`
+dans le répertoire courant
 
 <Br><Br>
 
 ## Purl()
 
-La fonction `purl()` (lancer dans la console R) permet d'extraire toutes les lignes de codes des chunks et de les sauvegarder dans un fichier. L'argument `documentation` permet de choisir si on affiche ou non les labels et les options de chaque chunk.
+La fonction `purl()` (lancer dans la console R) permet d'extraire toutes
+les lignes de codes des chunks et de les sauvegarder dans un fichier.
+L'argument `documentation` permet de choisir si on affiche ou non les
+labels et les options de chaque chunk.
 
- - 0 : ne garde que le code
- - 1 : affiche labels et options de chaque chunk
+-   0 : ne garde que le code
+-   1 : affiche labels et options de chaque chunk
 
 `> purl(input = "markdown_to_extract.rmd", output = "code_extracted.R", documentation = 1)`
 
@@ -1186,45 +1333,55 @@ La fonction `purl()` (lancer dans la console R) permet d'extraire toutes les lig
 
 ## Raccourcis clavier
 
-Laissez reposer votre souris, pensez au bien être animal, vous gagnerez en efficacité `r emo::ji("mouse")`
-<Br>
+Laissez reposer votre souris, pensez au bien être animal, vous gagnerez
+en efficacité `r emo::ji("mouse")` <Br>
 
-| Combinaison clavier| action| 
-|:-------|:-----------|
-|<kbd>Alt Gr</kbd> + <kbd>7</kbd> | insère un backquote  |
-|<kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>k</kbd> | knit le document courant  |
-|<kbd>Ctrl</kbd> + <kbd>Alt</kbd> + <kbd>i</kbd>  |insére un chunk  |
-|sélection + <kbd>"</kbd> |met la sélection entre `"` (idem avec les backquotes)  |
-|sélection + <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>c</kbd> |transforme la sélection en commentaire et vice-versa  |
-|<kbd>Alt</kbd> + souris|  sélectionne une zone de texte  |
-|curseur ou sélection + <kbd>Ctrl</kbd> + <kbd>Entrée</kbd> | exécute la ligne de code où se trouve le curseur ou la sélection  |
-|<kbd>Ctrl</kbd> + <kbd>1</kbd> | fenêtre script  |
-|<kbd>Ctrl</kbd> + <kbd>2</kbd>  |fenêtre console|
+| Combinaison clavier                                           | action                                                           |
+|:----------------------------|:------------------------------------------|
+| <kbd>Alt Gr</kbd> + <kbd>7</kbd>                              | insère un backquote                                              |
+| <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>k</kbd>             | knit le document courant                                         |
+| <kbd>Ctrl</kbd> + <kbd>Alt</kbd> + <kbd>i</kbd>               | insére un chunk                                                  |
+| sélection + <kbd>"</kbd>                                      | met la sélection entre `"` (idem avec les backquotes)            |
+| sélection + <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>c</kbd> | transforme la sélection en commentaire et vice-versa             |
+| <kbd>Alt</kbd> + souris                                       | sélectionne une zone de texte                                    |
+| curseur ou sélection + <kbd>Ctrl</kbd> + <kbd>Entrée</kbd>    | exécute la ligne de code où se trouve le curseur ou la sélection |
+| <kbd>Ctrl</kbd> + <kbd>1</kbd>                                | fenêtre script                                                   |
+| <kbd>Ctrl</kbd> + <kbd>2</kbd>                                | fenêtre console                                                  |
 
 ## R Markdown vs Notebook
 
-RStudio vous donne la possibilité de créé un R Markdown ou un Notebook, qu'est-ce qui les différencies.
+RStudio vous donne la possibilité de créé un R Markdown ou un Notebook,
+qu'est-ce qui les différencies.
 
 Rien lors de l'écriture du document excepté dans le YAML:
 
 `output: html_notebook`
 
-En revanche, c'est au moment de l'exécution que l'on voit la différence, pour les R Markdown on a un bouton `knitr` alors que pour un Notebook on a un bouton `preview` !  
+En revanche, c'est au moment de l'exécution que l'on voit la différence,
+pour les R Markdown on a un bouton `knitr` alors que pour un Notebook on
+a un bouton `preview` !
 
-Lorsque on `knitr` un R Markdown, une session R est ouverte et tout le code est exécuté dans cet environnement puis la session est refermée.  
+Lorsque on `knitr` un R Markdown, une session R est ouverte et tout le
+code est exécuté dans cet environnement puis la session est refermée.
 
-Un Notebook utilise l'environnement global (celui de la console R ouverte) et un fichier HTML est créé (avec toutes les résultats des chunks) puis mis à jour automatiquement à chaque sauvegarde.  
-Ainsi, le résultat de chaque chunk (calculé auparavant) peut être visualisé à tout moment.  
+Un Notebook utilise l'environnement global (celui de la console R
+ouverte) et un fichier HTML est créé (avec toutes les résultats des
+chunks) puis mis à jour automatiquement à chaque sauvegarde.\
+Ainsi, le résultat de chaque chunk (calculé auparavant) peut être
+visualisé à tout moment.
 
-Pour transformer un R Markdown en Notebook il suffit de changer le YAML et inversement.
+Pour transformer un R Markdown en Notebook il suffit de changer le YAML
+et inversement.
 
 # Avancé: HTML/CSS et plus
 
 ## HTML/CSS
 
-L'utilisation d'html avec css permet de personnaliser grandement une page.  
+L'utilisation d'html avec css permet de personnaliser grandement une
+page.
 
-Pour cela il suffit de créer un css à proximité du .rmd puis de le déclarer dans le yaml en tant que css.
+Pour cela il suffit de créer un css à proximité du .rmd puis de le
+déclarer dans le yaml en tant que css.
 
 ```{r, eval = FALSE}
 ---
@@ -1239,9 +1396,13 @@ output:
 
 Voici quelques exemples:
 
-### Rajouter un ascenseur  
+### Rajouter un ascenseur
 
-L'affichage d'un data.frame peut devenir envahissant si celui est vraiment long. Une solution est d'utiliser les fonctions `head()` et `tail()` pour en afficher que le début ou la fin ou bien de le converit en objet tibble mais dans ces cas on a pas accès à l'ensemble de l'objet.  
+L'affichage d'un data.frame peut devenir envahissant si celui est
+vraiment long. Une solution est d'utiliser les fonctions `head()` et
+`tail()` pour en afficher que le début ou la fin ou bien de le converit
+en objet tibble mais dans ces cas on a pas accès à l'ensemble de
+l'objet.
 
 Une solution est d'ajouter un ascenseur sur le côté.
 
@@ -1264,7 +1425,8 @@ mtcars
 ### Ajouter un panneau escamotable
 
 <details>
-  <summary>Cliquer pour afficher mtcars</summary>
+
+<summary>Cliquer pour afficher mtcars</summary>
 
 ```{r, class.output = "scroll-300"}
 mtcars
@@ -1272,11 +1434,12 @@ mtcars
 
 </details>
 
-
-
 ### Utiliser un bouton pour afficher un résultat
 
-En insérant ce code dans un fichier nommé "settings.r" et en le chargeant avec la fonction `source()` en début de script, on a la possibilité d'affiché un bouton qui affiche/cache le résultat d'un chunk.
+En insérant ce code dans un fichier nommé "settings.r" et en le
+chargeant avec la fonction `source()` en début de script, on a la
+possibilité d'affiché un bouton qui affiche/cache le résultat d'un
+chunk.
 
 ```{r, eval = FALSE}
 # Knitr hooks
@@ -1317,50 +1480,38 @@ source("settings.R")
 
 Il suffit d'ajouter la fonction dans les options du chunk pour l'activer
 
-{r, hide_button = TRUE} 
+{r, hide_button = TRUE}
 
 ```{r, hide_button = TRUE}
 summary(mtcars)
 ```
 
-# Liens {-}
+# Liens {.unnumbered}
 
-https://bookdown.org/yihui/rmarkdown/
+<https://bookdown.org/yihui/rmarkdown/>
 
-https://yihui.name/tinytex/
+<https://yihui.name/tinytex/>
 
-http://svmiller.com/blog/2016/02/svm-r-markdown-manuscript/
+<http://svmiller.com/blog/2016/02/svm-r-markdown-manuscript/>
 
-https://www.rstudio.com/resources/cheatsheets/#rmarkdown
+<https://www.rstudio.com/resources/cheatsheets/#rmarkdown>
 
-https://yaml.org/spec/1.2/spec.html
+<https://yaml.org/spec/1.2/spec.html>
 
-https://pandoc.org/MANUAL.html#options
+<https://pandoc.org/MANUAL.html#options>
 
-https://sumanmathmedicine.blogspot.com/2014/11/using-markdown-and-pandoc-for.html
+<https://sumanmathmedicine.blogspot.com/2014/11/using-markdown-and-pandoc-for.html>
 
-https://dr-harper.github.io/rmarkdown-cookbook/
+<https://dr-harper.github.io/rmarkdown-cookbook/>
 
-https://en.wikibooks.org/wiki/LaTeX/Mathematics
+<https://en.wikibooks.org/wiki/LaTeX/Mathematics>
 
-http://haozhu233.github.io/kableExtra/
+<http://haozhu233.github.io/kableExtra/>
 
-https://davidgohel.github.io/flextable/index.html
+<https://davidgohel.github.io/flextable/index.html>
 
-https://ymlthis.r-lib.org/
+<https://ymlthis.r-lib.org/>
 
-https://rmd4medicine.netlify.com/materials/
-
+<https://rmd4medicine.netlify.com/materials/>
 
 # Biblio
-
-
-
-
-
-  
-  
-  
-  
-  
-  
